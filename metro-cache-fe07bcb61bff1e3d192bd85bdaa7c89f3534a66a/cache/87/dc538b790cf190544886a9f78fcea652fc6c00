@@ -1,0 +1,156 @@
+__d(function (global, require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react2 = require(_dependencyMap[0], "react");
+
+  var _react3 = _interopRequireDefault(_react2);
+
+  var _index = require(_dependencyMap[1], "./../node_modules/react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _jsxFileName = "/home/bilal/Desktop/work/reactNative/swipe2/src/Deck.js";
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _reactNative = require(_dependencyMap[2], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    Deck: {
+      displayName: "Deck"
+    }
+  };
+
+  var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/home/bilal/Desktop/work/reactNative/swipe2/src/Deck.js",
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var SCREEN_WIDTH = _reactNative.Dimensions.get('window').width;
+
+  var SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
+
+  var Deck = _wrapComponent("Deck")(function (_Component) {
+    _inherits(Deck, _Component);
+
+    function Deck(props) {
+      _classCallCheck(this, Deck);
+
+      var _this = _possibleConstructorReturn(this, (Deck.__proto__ || Object.getPrototypeOf(Deck)).call(this, props));
+
+      var position = new _reactNative.Animated.ValueXY();
+
+      var panResponder = _reactNative.PanResponder.create({
+        onStartShouldSetPanResponder: function onStartShouldSetPanResponder() {
+          return true;
+        },
+        onPanResponderMove: function onPanResponderMove(event, gesture) {
+          position.setValue({
+            x: gesture.dx,
+            y: gesture.dy
+          });
+        },
+        onPanResponderRelease: function onPanResponderRelease(event, gesture) {
+          if (gesture.dx > SWIPE_THRESHOLD) {} else if (gesture.dx < -SWIPE_THRESHOLD) {} else {
+            _this.resetPosition();
+          }
+        }
+      });
+
+      _this.state = {
+        panResponder: panResponder,
+        position: position
+      };
+      return _this;
+    }
+
+    _createClass(Deck, [{
+      key: "resetPosition",
+      value: function resetPosition() {
+        _reactNative.Animated.spring(this.state.position, {
+          toValue: {
+            x: 0,
+            y: 0
+          }
+        }).start();
+      }
+    }, {
+      key: "getCardStyle",
+      value: function getCardStyle() {
+        var position = this.state.position;
+        var rotate = position.x.interpolate({
+          inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
+          outputRange: ['-120deg', '0deg', '120deg']
+        });
+        return _extends({}, position.getLayout(), {
+          transform: [{
+            rotate: rotate
+          }]
+        });
+      }
+    }, {
+      key: "renderCards",
+      value: function renderCards() {
+        var _this2 = this;
+
+        return this.props.data.map(function (item, index) {
+          if (index === 0) {
+            return _react3.default.createElement(
+              _reactNative.Animated.View,
+              _extends({
+                key: item.id,
+                style: _this2.getCardStyle()
+              }, _this2.state.panResponder.panHandlers, {
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 54
+                }
+              }),
+              _this2.props.renderCard(item)
+            );
+          }
+
+          return _this2.props.renderCard(item);
+        });
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        return _react3.default.createElement(
+          _reactNative.View,
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 70
+            }
+          },
+          this.renderCards()
+        );
+      }
+    }]);
+
+    return Deck;
+  }(_react2.Component));
+
+  exports.default = Deck;
+});
